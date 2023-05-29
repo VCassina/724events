@@ -9,24 +9,24 @@ const Slider = () => {
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus?.sort((evtA, evtB) =>
     new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
-  ) || [];
-  const timeoutIdRef = useRef(null);
+  ) || [];    // Rajouter dans le conditionnement pour lui transmettre, par défaut, un état stable qui n'entrave pas le fonctionnement du slider et qui ne provoque pas de crash.
+  const timeoutId = useRef(null); 
 
   const nextCard = () => {
-    setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
+    setIndex((prevIndex) => (prevIndex === byDateDesc.length - 1 ? 0 : prevIndex + 1));
   };
 
   useEffect(() => {
-    clearTimeout(timeoutIdRef.current);
+    clearTimeout(timeoutId.current);
 
-    timeoutIdRef.current = setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       nextCard();
     }, 5000);
 
     return () => {
-      clearTimeout(timeoutIdRef.current);
+      clearTimeout(timeoutId.current);
     };
-  }, [index]);
+  }, [byDateDesc, index]);
 
   const handleRadioChange = (radioIdx) => {
     setIndex(radioIdx);
