@@ -79,9 +79,9 @@ import "./style.scss";
 const EventCard = (props) => {
   const { imageSrc, imageAlt, date = new Date(), title, label, small = false } = props;
 
-console.log(imageSrc);
-console.log(title);
-console.log(label);
+// console.log(imageSrc);
+// console.log(title);
+// console.log(label);
 
   return (
     <div
