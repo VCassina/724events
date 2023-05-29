@@ -9,17 +9,20 @@ import "./style.css";
 
 const PER_PAGE = 9;
 
-const EventList = () => {
-  const { data, error } = useData();
-  const [type, setType] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
-  const filteredEvents = (
-    (!type
-      ? data?.events
-      : data?.events) || []
-  ).filter((event, index) => {
-    if (
-      (currentPage - 1) * PER_PAGE <= index &&
+const EventList = () => { 
+  
+  const { data, error } = useData();  // Récupération de data et les événements d'erreurs.
+  const [type, setType] = useState(); // type sera notre valeur de choix par l'utilisateur concernant le filtre à appliquer.
+  const [currentPage, setCurrentPage] = useState(1); // La page actuelle affichée, elles regroupent 9 événements par page, commence à 1.
+  
+  const filteredEvents = (  // Les éléments filtrés :
+    (!type                  // Est-ce que type est défini ?
+      ? data?.events        // Oui, alors data?.events.
+      : data?.events) || [] // Non, alors data?.events sachant que la valeur par défaut sera de "tableau vide".
+  ).filter((_, index) => {  // Maintenant on va filtrer les éléments séléctés qui proviennent de la base de données (ou sont vides dans le pire des cas mais qui ne fera pas crash l'application).
+    // Index n'est pas utilisé mais est là pour ne pas faire planter la fonction de rappel, il est la pour consolider la "structure".
+    if (    
+      (currentPage - 1) * PER_PAGE <= index &&  // Est-ce que notre élément en cours est
       PER_PAGE * currentPage > index
     ) {
       return true;
