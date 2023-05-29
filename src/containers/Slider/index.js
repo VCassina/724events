@@ -8,17 +8,31 @@ const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
-    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+    new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   );
+  const [timeoutId, setTimeoutId] = useState(null);
+
   const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length-1 ? index + 1 : 0),
-      5000
-    );
+    setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
   };
+
   useEffect(() => {
-    nextCard();
-  });
+    clearTimeout(timeoutId);
+
+    const newTimeoutId = setTimeout(() => {
+      nextCard();
+    }, 5000);
+
+    setTimeoutId(newTimeoutId);
+
+    return () => {
+      clearTimeout(newTimeoutId);
+    };
+  }, [index]);
+
+  const handleRadioChange = (radioIdx) => {
+    setIndex(radioIdx);
+  };
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
@@ -39,17 +53,18 @@ const Slider = () => {
             </div>
           </div>
           <div className="SlideCard__paginationContainer">
-            <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
-                <input
-                  key={`${event.id}`}
-                  type="radio"
-                  name="radio-button"
-                  checked={idx === radioIdx}
-                />
-              ))}
-            </div>
-          </div>
+  <div className="SlideCard__pagination">
+     {byDateDesc.map((e, radioIdx) => (
+      <input
+        key={e.id}
+        type="radio"
+        name="radio-button"
+        checked={index === radioIdx}
+        onChange={() => handleRadioChange(radioIdx)}
+      />
+    ))} 
+  </div>
+</div>
         </>
       ))}
     </div>
