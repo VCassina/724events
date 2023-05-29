@@ -10,26 +10,24 @@ const Slider = () => {
   const byDateDesc = data?.focus?.sort((evtA, evtB) =>
     new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
   ) || [];    // Rajouter dans le conditionnement pour lui transmettre, par défaut, un état stable qui n'entrave pas le fonctionnement du slider et qui ne provoque pas de crash.
-  const timeoutId = useRef(null); 
+  const timeoutId = useRef(null); // Un useRef, il permet de faire ici "comme un let" qui permettra plus tard de réinitialiser le temps de setTimeout() 
+  // - pour ne pas provoquer de "saccades"/"sauts" dans les changements de slides si jamais on décide de changer d'image.
+  // Ce n'est pas forcement le comporter d'un useRef mais il peut être utilisé comme un let qui donc, sera réinitialisé à chaque changement onClick et correspondra au setTimeout().
 
-  const nextCard = () => {
+  const nextCard = () => {  // Le même script à ce niveau là, fonction fléchée qui permet de changer de slide.
     setIndex((prevIndex) => (prevIndex === byDateDesc.length - 1 ? 0 : prevIndex + 1));
   };
 
-  useEffect(() => {
-    clearTimeout(timeoutId.current);
-
-    timeoutId.current = setTimeout(() => {
-      nextCard();
+  useEffect(() => { // Notre code permettant de contrôler le fameux setTimeout() lors d'un click sur une image et le remettre à zéro -
+    //  AINSI que, comme initialiement prévu, permettre au compteur de fonctionner et d'afficher l'index en cours.
+    clearTimeout(timeoutId.current);  // Notre timeoutId.current est clear s'il comportait un setTimeout.
+    timeoutId.current = setTimeout(() => {  // On initie un nouveau setTimeout.
+      nextCard(); // Qui suite à sa fin (naturelle), déclanchera nextCard, pas de changement sur le fonctionnement à ce niveau là.
     }, 5000);
+  }, [index]);  // Si on change de slide naturellement, l'index changera, et artificiellement, c'est également le cas.
 
-    return () => {
-      clearTimeout(timeoutId.current);
-    };
-  }, [byDateDesc, index]);
-
-  const handleRadioChange = (radioIdx) => {
-    setIndex(radioIdx);
+  const handleRadioChange = (currentIndex) => { // currentIndex (radioIdx que j'ai renommé), se voit modifier avec l'utilisation du state. Rien de changer non plus ici.
+    setIndex(currentIndex);
   };
 
   return (
