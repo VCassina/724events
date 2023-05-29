@@ -118,9 +118,10 @@ const EventList = () => {
     const paginatedEvents = filtered.slice(startIndex, endIndex);
     setFilteredEvents(paginatedEvents);
   }, [type, data?.events, currentPage]);
-
-  const pageNumber = Math.ceil((filteredEvents?.length || 0) / PER_PAGE);
+  
+  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
   const typeList = new Set(data?.events.map((event) => event.type));
+
 
   return (
     <>
@@ -140,23 +141,28 @@ const EventList = () => {
                 {({ setIsOpened }) => (
                   <EventCard
                     onClick={() => setIsOpened(true)}
-                    imageSrc={event.cover}
-                    title={event.title}
+                    imageSrc={event.cover}  // EN ERREUR dans la console -- Les props ne sont pas biens transmis.
+                    title={event.title} // EN ERREUR dans la console -- Les props ne sont pas biens transmis.
                     date={new Date(event.date)}
-                    label={event.type}
+                    label={event.type} // Ici, seul le label change d'une page à l'autre, on va aller voir pourquoi. Ettt... Je n'ai pas trouvé pourquoi...
+                    // Un soucis avec la façon dont les probs sont transmis ?
                   />
                 )}
               </Modal>
             ))}
           </div>
-        <div className="Pagination">
-             {[...Array(pageNumber || 0)].map((_, n) => (
-               // eslint-disable-next-line react/no-array-index-key
-               <a key={n} href="#events" onClick={() => setCurrentPage(n + 1)}>
-                 {n + 1}
-               </a>
-             ))}
-           </div>
+           <div className="Pagination">
+  {Array.from({ length: pageNumber }, (_, index) => (
+    <a href="#event"
+    // eslint-disable-next-line react/no-array-index-key
+      key={index + 1}
+      className={currentPage === index + 1 ? "active" : ""}
+      onClick={() => setCurrentPage(index + 1 )}
+    >
+      {index + 1}
+    </a>
+  ))}
+</div>
 
           
         </>
