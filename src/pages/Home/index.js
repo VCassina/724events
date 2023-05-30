@@ -24,6 +24,8 @@ const Page = () => {
       // A partir d'ici, tri par ordre chronologique des événements depuis le JSON.
       const sortedDataByDate = [...data.events]; // CLONE de data.events.
       sortedDataByDate.sort((a, b) => new Date(b.date) - new Date(a.date)); // Trie des événements par date !!
+      // Avec cette méthode, les éléments sont triés par COMPARAISON, les deux premiers, si c'est positif, B est plus récent, si c'est négatif, c'est A, ainsi de suite, le gagnant prend "C", etc.
+      // Et il ne peut en rester qu'un.
       setLast(sortedDataByDate[0]); // On attribue le plus récent à setLast, notre variable last est prête est viendra donner les bons arguments à la dernière EventCard.
     }
   }, [data]);
@@ -135,8 +137,9 @@ const Page = () => {
           imageSrc={last?.cover}
           title={last?.title}
           date={new Date(last?.date)}
-          small
-          label="boom" // ?? Est-ce que cela doit rester ?
+          // small
+          // label="boom" // ?? Est-ce que cela doit rester ?? C'est moche. Comme c'est précisé small label, j'ai un doute...
+          small label={last.type}
         />
       </div>
       <div className="col contact">
