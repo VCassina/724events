@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -15,10 +15,20 @@ import { useData } from "../../contexts/DataContext";
 
 
 const Page = () => {
-  const {last} = useData(); // Ici, on est d'accord qu'on prend TOUS les éléments comme ça.
+  const [last, setLast] = useState(null);
+  const { data } = useData(); // Ici, on est d'accord qu'on prend TOUS les éléments comme ça.
+
   useEffect(() => {
-    console.log("last:", last); // Et non, pire encore, il est undefined !
-  }, [last]);
+    if (data?.events) { // Etape de vérification sinon null est visiblement conservé.
+
+      // A partir d'ici, tri par ordre chronologique des événements depuis le JSON.
+      const sortedDataByDate = [...data.events]; // CLONE de data.events.
+      sortedDataByDate.sort((a, b) => new Date(b.date) - new Date(a.date)); // Trie des événements par date !!
+      setLast(sortedDataByDate[0]); // On attribue le plus récent à setLast, notre variable last est prête est viendra donner les bons arguments à la dernière EventCard.
+    }
+  }, [data]);
+
+
   return <>
     <header>
       <Menu />
