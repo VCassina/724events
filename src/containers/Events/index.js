@@ -149,19 +149,17 @@ const EventList = () => {
             ))}
           </div>
            <div className="Pagination">
-  {Array.from({ length: pageNumber }, (_, index) => (
-    <a href="#event"
-    // eslint-disable-next-line react/no-array-index-key
-      key={index + 1}
-      className={currentPage === index + 1 ? "active" : ""}
-      onClick={() => setCurrentPage(index + 1 )}
-    >
-      {index + 1}
-    </a>
-  ))}
-</div>
-
-          
+            {Array.from({ length: pageNumber }, (_, index) => (
+              <a href="#event"
+              // eslint-disable-next-line react/no-array-index-key
+                key={index + 1}
+                className={currentPage === index + 1 ? "active" : ""}
+                onClick={() => setCurrentPage(index + 1 )}
+              >
+                {index + 1}
+              </a>
+            ))}
+          </div>
         </>
       )}
     </>
