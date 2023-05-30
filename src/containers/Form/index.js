@@ -1,28 +1,34 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from "react"; // Gestion de callBack qui s'assure d'être rappelé uniquement en cas de changement (ok).
 import PropTypes from "prop-types";
 import Field, { FIELD_TYPES } from "../../components/Field";
 import Select from "../../components/Select";
 import Button, { BUTTON_TYPES } from "../../components/Button";
 
-const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 1000); })
+const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 1000); }) // Simulation d'une chargement avant réussite de communication avec l'API ! (J'imagine).
 
-const Form = ({ onSuccess, onError }) => {
-  const [sending, setSending] = useState(false);
-  const sendContact = useCallback(
+
+
+const Form = ({ onSuccess, onError }) => { // Reçoit des props qui réfèrent réciproquement au cas de reussite ou d'echec (de contact à l'API ? De quoi ?).
+  
+  const [sending, setSending] = useState(false); // La variable indiquant si on est en train d'envoyer ou non notre requête. Sert surtout pour les retours et quoi afficher, sentiment de feed-back UI.
+  const sendContact = useCallback( // Notre gestion de callBack utilisée pour gérer l'envoie fetch en async et doit s'update lors de changement détecté.
     async (evt) => {
       evt.preventDefault();
-      setSending(true);
-      // We try to call mockContactApi
+      setSending(true); // On est en train d'envoyer.
+      // We try to call mockContactApi.
       try {
         await mockContactApi();
-        setSending(false);
+        setSending(false);  // On a réussi à l'envoyer, on n'envoie plus.
+        onSuccess(true)
       } catch (err) {
-        setSending(false);
-        onError(err);
+        setSending(false); // On a échoué, on n'envoie plus.
+        onError(err); // Si une erreur a été trouvée, elle sera fourni en value de onError, utilisé dans l'affichage ensuite par le parent pour l'ouverture modale.
       }
     },
-    [onSuccess, onError]
+    [onSuccess, onError]  // 
   );
+
+
   return (
     <form onSubmit={sendContact}>
       <div className="row">

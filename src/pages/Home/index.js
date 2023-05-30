@@ -106,8 +106,8 @@ const Page = () => {
         >
           {({ setIsOpened }) => (
             <Form
-              onSuccess={() => setIsOpened(true)}
-              onError={() => null}
+              onSuccess={() => setIsOpened(true)} // onSucces / onError c'est à dire ? Lorsque l'envoie ne rencontre pas d'erreur ? Oui, dans ce cas => setIsOpened(true).
+              onError={() => null}  // Sinon, rien de particulier.
             />
           )}
         </Modal>
