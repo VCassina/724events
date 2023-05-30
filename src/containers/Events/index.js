@@ -106,6 +106,7 @@ const EventList = () => {
     setCurrentPage(1);
     setType(newType);
   };
+const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => { // Utilisation d'un useEffect nécéssaire pour faire fonctionner le filtre.
     const startIndex = (currentPage - 1) * PER_PAGE; // 0 ou 9, respectivement le début d'index de la page 1 et 2. Marche à l'infini.
@@ -116,11 +117,13 @@ const EventList = () => {
     const paginatedEvents = filtered.slice(startIndex, endIndex); // On utilise uniquement ceux qui correspondent à la page en cours ! 
     // > CETTE FACON DE FAIRE ne sépare plus en page mais les regroupent s'ils rentrent tous sur une page.
     setFilteredEvents(paginatedEvents); // On change les évenements filtrés par rapport au résultat des éléments filtrés sur la page :) !
-  }, [type, data?.events, currentPage]);  // En cas de changement de DB (quand on a fini de la charger), ça change, quand on change le type, bien sûr et quand on change de page également !
-  
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
-  const typeList = new Set(data?.events.map((event) => event.type));
 
+    const filteredCount = filtered.length;  // La taille de filtered, qui sert de référence pour le nombre d'item récolté PAR filtre.
+    const calculatedPageNumber = Math.ceil(filteredCount / PER_PAGE); // Le nombre de page, on prend filteredCount divisé par le nb d'items par page (directement .lenght ne marchait pas). Pourquoi ?
+    setPageNumber(calculatedPageNumber); // En cas de changement, on applique calculatedPageNumber comme valeur :) ! Et voila !
+  }, [type, data?.events, currentPage]);  // En cas de changement de DB (quand on a fini de la charger), ça change, quand on change le type, bien sûr et quand on change de page également !
+
+  const typeList = new Set(data?.events.map((event) => event.type));
   return (
     <>
       {error && <div>An error occurred</div>}
