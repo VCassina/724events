@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,8 +13,12 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
 const Page = () => {
-  const {last} = useData()
+  const {last} = useData(); // Ici, on est d'accord qu'on prend TOUS les éléments comme ça.
+  useEffect(() => {
+    console.log("last:", last); // Et non, pire encore, il est undefined !
+  }, [last]);
   return <>
     <header>
       <Menu />
@@ -121,7 +126,7 @@ const Page = () => {
           title={last?.title}
           date={new Date(last?.date)}
           small
-          label="boom"
+          label="boom" // ?? Est-ce que cela doit rester ?
         />
       </div>
       <div className="col contact">

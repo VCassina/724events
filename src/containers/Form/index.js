@@ -6,8 +6,6 @@ import Button, { BUTTON_TYPES } from "../../components/Button";
 
 const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 1000); }) // Simulation d'une chargement avant réussite de communication avec l'API ! (J'imagine).
 
-
-
 const Form = ({ onSuccess, onError }) => { // Reçoit des props qui réfèrent réciproquement au cas de reussite ou d'echec (de contact à l'API ? De quoi ?).
   
   const [sending, setSending] = useState(false); // La variable indiquant si on est en train d'envoyer ou non notre requête. Sert surtout pour les retours et quoi afficher, sentiment de feed-back UI.
@@ -19,13 +17,13 @@ const Form = ({ onSuccess, onError }) => { // Reçoit des props qui réfèrent r
       try {
         await mockContactApi();
         setSending(false);  // On a réussi à l'envoyer, on n'envoie plus.
-        onSuccess(true)
+        onSuccess(true);  // IL MANQUAIT LE CALL-BACK ici ! Il n'y avait rien et voila qu'aujourd'hui on y retrouve une modification de la valeur onSucces pour true, ce qui ouvrira la modale avec la confirmation d'envoie.
       } catch (err) {
         setSending(false); // On a échoué, on n'envoie plus.
         onError(err); // Si une erreur a été trouvée, elle sera fourni en value de onError, utilisé dans l'affichage ensuite par le parent pour l'ouverture modale.
       }
     },
-    [onSuccess, onError]  // 
+    [onSuccess, onError]
   );
 
 
