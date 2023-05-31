@@ -16,9 +16,9 @@ const Select = ({
   const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
   const changeValue = (newValue) => {
-    onChange(newValue); // !! La valeur séléctionnée par l'utilisateur n'était pas renseignée ici !!
+    onChange(newValue); // !! La valeur séléctionnée par l'utilisateur n'était pas renseignée ici lors du changement !!
     setValue(newValue);
-    setCollapsed(newValue);
+    setCollapsed(true); // True, quoi qu'il arrive, au changement de value, ça se ferme.
   };
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
