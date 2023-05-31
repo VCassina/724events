@@ -65,7 +65,7 @@ const [pageNumber, setPageNumber] = useState(1);
           </div>
            <div className="Pagination">
             {Array.from({ length: pageNumber }, (_, index) => (
-              <a href="#event"
+              <a href="#nos-realisations"
               // eslint-disable-next-line react/no-array-index-key
                 key={index + 1}
                 className={currentPage === index + 1 ? "active" : ""}
