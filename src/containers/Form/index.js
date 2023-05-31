@@ -45,6 +45,7 @@ const Form = ({ onSuccess, onError }) => { // Reçoit des props qui réfèrent r
             {sending ? "En cours" : "Envoyer"}
           </Button>
         </div>
+
         <div className="col">
           <Field
             placeholder="message"
