@@ -31,7 +31,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="e">
+    <div className="SlideCardList">
       {byDateDesc.map((e, idx) => (
         <div
           key={e.id}
