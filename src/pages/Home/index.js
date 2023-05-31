@@ -4,6 +4,7 @@ import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
 import PeopleCard from "../../components/PeopleCard";
 
+
 import "./style.scss";
 import EventList from "../../containers/Events";
 import Slider from "../../containers/Slider";
@@ -11,6 +12,7 @@ import Logo from "../../components/Logo";
 import Icon from "../../components/Icon";
 import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
+import ModalEvent from "../../containers/ModalEvent";
 import { useData } from "../../contexts/DataContext";
 
 
@@ -131,14 +133,18 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last && last.length -1 !== 0 ? last.cover : loadingValue}
-          title={last && last.length -1 !== 0 ? last.title : loadingValue}
-          date={new Date(last?.date)} // Je pense qu'elle n'est jamais en warning car elle prend plus de temps à être crée avec le new.
-          // small
-          // label="boom" // ?? Est-ce que cela doit rester ?? C'est moche. Comme c'est précisé small label, j'ai un doute...
-          small label={last && last.length -1 !== 0 ? last.type : loadingValue}
-        />
+              <Modal Content={<ModalEvent event={last} />}>
+                {({ setIsOpened }) => ( // Ajout d'un encadrement par les composants de la modale, permettant l'ouverture en modale lors du click.
+                  <EventCard
+                    onClick={() => setIsOpened(true)}
+                    imageSrc={last && last.length -1 !== 0 ? last.cover : loadingValue}
+                    title={last && last.length -1 !== 0 ? last.title : loadingValue}
+                    date={new Date(last.date)}
+                    small
+                    label={last && last.length -1 !== 0 ? last.type : loadingValue}
+                  />
+                )}
+              </Modal>
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
