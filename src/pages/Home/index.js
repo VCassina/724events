@@ -15,7 +15,7 @@ import { useData } from "../../contexts/DataContext";
 
 
 const Page = () => {
-  const [last, setLast] = useState(null);
+  const [last, setLast] = useState([0]); // Valeur temporaire pour éviter un crash qu'on mettra à jour dans le useEffect.
   const { data } = useData(); // Ici, on est d'accord qu'on prend TOUS les éléments comme ça.
 
   useEffect(() => {
