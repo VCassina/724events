@@ -17,7 +17,7 @@ import { useData } from "../../contexts/DataContext";
 const Page = () => {
   const [last, setLast] = useState([0]); // Valeur temporaire pour éviter un crash qu'on mettra à jour dans le useEffect.
   const { data } = useData(); // Ici, on est d'accord qu'on prend TOUS les éléments comme ça.
-
+  const loadingValue = "chargement";
   useEffect(() => {
     if (data?.events) { // Etape de vérification sinon null est visiblement conservé.
 
@@ -28,9 +28,7 @@ const Page = () => {
       // Et il ne peut en rester qu'un.
       setLast(sortedDataByDate[0]); // On attribue le plus récent à setLast, notre variable last est prête est viendra donner les bons arguments à la dernière EventCard.
     }
-  }, [data]);
-
-
+  }, [data]); 
   return <>
     <header>
       <Menu />
@@ -134,12 +132,12 @@ const Page = () => {
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
         <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
+          imageSrc={last && last.length -1 !== 0 ? last.cover : loadingValue}
+          title={last && last.length -1 !== 0 ? last.title : loadingValue}
+          date={new Date(last?.date)} // Je pense qu'elle n'est jamais en warning car elle prend plus de temps à être crée avec le new.
           // small
           // label="boom" // ?? Est-ce que cela doit rester ?? C'est moche. Comme c'est précisé small label, j'ai un doute...
-          small label={last.type}
+          small label={last && last.length -1 !== 0 ? last.type : loadingValue}
         />
       </div>
       <div className="col contact">
