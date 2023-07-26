@@ -1,4 +1,12 @@
-# 724 Events
+// 724 Events !
+
+Projet de débuggage d'un site en React dans le cadre de la formation intégrateur WEB.
+
+//
+
+//
+
+//
 
 ## Description
 L'application est le site d'une agence evenementielle.
